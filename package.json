@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "jsnext:main": "lib.es6/index.js",
   "scripts": {
-    "test": "mocha --compiler ts:ts-node/register src/**/*.spec.ts",
-    "test:watch": "npm run test -- --watch",
+    "test": "mocha --compilers ts:ts-node/register src/**/*.spec.ts",
+    "test:watch": "npm run test -- --watch --watch-extension ts",
     "clean": "rimraf lib lib.es6",
     "build": "npm run clean && tsc && tsc -p tsconfig.es6.json"
   },
