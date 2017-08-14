@@ -8,23 +8,23 @@ import { Mode } from '../types/mode';
 import { PositionType } from "../types/position-type";
 import { IEnd } from '../types/end-interface';
 
-export class UGLBuilder {
+export class UGLBuilder<T extends IUGLWriter> {
     protected wroteKop : boolean = false;
     protected wroteEnd : boolean = false;
     
     protected runningPosition : number = 0;
     protected runningIndex : number = 0;
     
-    constructor(protected writer : IUGLWriter,
+    constructor(protected writer : T,
                 protected readonly mode : Mode = Mode.Craftsman) {
     }
     
     kop(data : IKop) : this {
-        if(this.wroteKop) {
-            throw new Error(`KOP already written!`);
-        }
         if(this.wroteEnd) {
-            throw new Error('END already written!');
+            throw new Error('END already written');
+        }
+        if(this.wroteKop) {
+            throw new Error(`KOP already written`);
         }
         
         let {
@@ -34,7 +34,7 @@ export class UGLBuilder {
             requestId = uid(15),
             text = '',
             operationId = 0,
-            deliveryDate = '0000000000',
+            deliveryDate = '00000000',
             currency = 'EUR',
             version = '04.00',
             name = '',
@@ -42,8 +42,8 @@ export class UGLBuilder {
         } = data;
         
         if(requestType === RequestType.TB || requestType === RequestType.BE) {
-            if(!deliveryDate || deliveryDate == '0000000000') {
-                throw new Error(`DeliveryDate required.`);
+            if(!deliveryDate || deliveryDate == '00000000') {
+                throw new Error(`DeliveryDate required`);
             }
         }
         
@@ -68,10 +68,10 @@ export class UGLBuilder {
     
     poa(data : IPoa) : this {
         if(!this.wroteKop) {
-            throw new Error(`Required KOP first!`);
+            throw new Error(`Required KOP`);
         }
         if(this.wroteEnd) {
-            throw new Error('END already written!');
+            throw new Error('END already written');
         }
         
         let {
@@ -88,7 +88,7 @@ export class UGLBuilder {
             alternative,
             type = PositionType.Regular,
             reservation,
-            quantityUnit = '',
+            quantityUnit = 'Stk',
             pkz = '',
             storeType = '',
         } = data;
@@ -100,15 +100,15 @@ export class UGLBuilder {
         if(typeof name === 'string') {
             name = [ name, '' ];
         }
-        if(name.length < 2) {
-            name[1] = '';
+        while(name.length < 2) {
+            name.push('');
         }
         
         if(typeof discount === 'number') {
             discount = [ discount, 0 ];
         }
-        if(discount.length < 2) {
-            discount[1] = 0;
+        while(discount.length < 2) {
+            discount.push(0);
         }
         
         this.writer
@@ -136,12 +136,12 @@ export class UGLBuilder {
         return this;
     }
     
-    end(data : IEnd) : this {
+    end(data : IEnd = {}) : this {
         if(!this.wroteKop) {
-            throw new Error(`Required KOP first!`);
+            throw new Error(`Required KOP`);
         }
         if(this.wroteEnd) {
-            throw new Error('END already written!');
+            throw new Error('END already written');
         }
         
         let text : string[];
@@ -161,13 +161,17 @@ export class UGLBuilder {
         }
         
         this.writer
-            .write(RecordType.END, 3)
-            .write(text[0], 40)
-            .write(text[1], 40)
-            .write(text[2], 40)
-            .write(text[3], 40);
+            .string(RecordType.END, 3)
+            .string(text[0], 40)
+            .string(text[1], 40)
+            .string(text[2], 40)
+            .string(text[3], 40);
         
         this.wroteEnd = true;
         return this;
+    }
+    
+    getWriter() : T {
+        return this.writer;
     }
 }

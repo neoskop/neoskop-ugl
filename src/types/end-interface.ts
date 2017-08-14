@@ -1,3 +1,3 @@
 export interface IEnd {
-    text: string|string[];
+    text?: string|string[];
 }

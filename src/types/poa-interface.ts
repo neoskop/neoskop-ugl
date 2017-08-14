@@ -11,7 +11,7 @@ export interface IPoa {
     priceUnit?: ''|'0'|'1'|'2'|'3' // gross per 1 / 10 / 100 / 1000 units
     net?: number;
     discount?: number|number[];
-    index: number;
+    index?: number;
     alternative?: boolean;
     type?: PositionType;
     reservation?: boolean;
