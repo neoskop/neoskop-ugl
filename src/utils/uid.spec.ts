@@ -2,7 +2,7 @@ import 'mocha';
 import { expect } from 'chai';
 import { uid } from './uid';
 
-describe('utilsuid', () => {
+describe('utils/uid', () => {
     describe('uid', () => {
         it('should generate valid uids', () => {
             const orig = Math.random;
