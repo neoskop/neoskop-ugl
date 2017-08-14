@@ -11,7 +11,7 @@ export abstract class UGLAbstractWriter implements IUGLWriter {
     }
     
     int(number : number, length : number) : this {
-        this.write(strPadLeft((number|0).toString(), length, '0'), length);
+        this.write(strPadLeft((Math.round(number)).toString(), length, '0'), length);
     
         return this;
     }
