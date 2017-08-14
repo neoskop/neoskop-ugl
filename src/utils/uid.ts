@@ -1,3 +1,3 @@
 export function uid(length : number) : number {
-    return Math.random() * (10 ** length) | 0;
+    return Math.floor(Math.random() * (10 ** length));
 }
