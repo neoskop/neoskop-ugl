@@ -7,6 +7,7 @@ import { IPoa } from '../types/poa-interface';
 import { Mode } from '../types/mode';
 import { PositionType } from "../types/position-type";
 import { IEnd } from '../types/end-interface';
+import { IAdr } from '../types/adr-interface';
 
 export class UGLBuilder<T extends IUGLWriter> {
     protected wroteKop : boolean = false;
@@ -66,13 +67,36 @@ export class UGLBuilder<T extends IUGLWriter> {
         return this;
     }
     
+    adr(data : IAdr) : this {
+        this.check();
+        
+        let {
+            name,
+            street,
+            country = '',
+            postalCode,
+            city
+        } = data;
+    
+        
+        name = this.scalarToArray(name, '', 3);
+        
+        this.writer
+            .string(RecordType.ADR, 3)
+            .string(name[0], 30)
+            .string(name[1], 30)
+            .string(name[2], 30)
+            .string(street, 30)
+            .string(country, 3)
+            .string(postalCode, 6)
+            .string(city, 30)
+            .nl();
+        
+        return this;
+    }
+    
     poa(data : IPoa) : this {
-        if(!this.wroteKop) {
-            throw new Error(`Required KOP`);
-        }
-        if(this.wroteEnd) {
-            throw new Error('END already written');
-        }
+        this.check();
         
         let {
             positionCraftsman = this.mode === Mode.Craftsman ? ++this.runningPosition : 0,
@@ -97,19 +121,8 @@ export class UGLBuilder<T extends IUGLWriter> {
             net = gross * quantity;
         }
         
-        if(typeof name === 'string') {
-            name = [ name, '' ];
-        }
-        while(name.length < 2) {
-            name.push('');
-        }
-        
-        if(typeof discount === 'number') {
-            discount = [ discount, 0 ];
-        }
-        while(discount.length < 2) {
-            discount.push(0);
-        }
+        name = this.scalarToArray(name, '', 2);
+        discount = this.scalarToArray(discount, 0, 2);
         
         this.writer
             .string(RecordType.POA, 3)
@@ -137,28 +150,9 @@ export class UGLBuilder<T extends IUGLWriter> {
     }
     
     end(data : IEnd = {}) : this {
-        if(!this.wroteKop) {
-            throw new Error(`Required KOP`);
-        }
-        if(this.wroteEnd) {
-            throw new Error('END already written');
-        }
+        this.check();
         
-        let text : string[];
-        
-        if(data.text) {
-            if(typeof data.text === 'string') {
-                text = [ data.text, '', '', '' ]
-            } else {
-                text = data.text;
-            }
-        } else {
-            text = [ '', '', '', '' ];
-        }
-        
-        while(text.length < 4) {
-            text.push('');
-        }
+        let text = this.scalarToArray(data.text, '', 4);
         
         this.writer
             .string(RecordType.END, 3)
@@ -169,6 +163,29 @@ export class UGLBuilder<T extends IUGLWriter> {
         
         this.wroteEnd = true;
         return this;
+    }
+    
+    protected scalarToArray<T>(input: T|T[]|undefined|null, defaultValue : T, length : number) : T[] {
+        let arr : T[];
+        if(!Array.isArray(input)) {
+            arr = input != undefined ? [ input ] : [];
+        } else {
+            arr = input.slice();
+        }
+        while(arr.length < length) {
+            arr.push(defaultValue);
+        }
+        
+        return arr;
+    }
+    
+    protected check() {
+        if(!this.wroteKop) {
+            throw new Error(`Required KOP`);
+        }
+        if(this.wroteEnd) {
+            throw new Error('END already written');
+        }
     }
     
     getWriter() : T {

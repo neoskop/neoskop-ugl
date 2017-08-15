@@ -68,6 +68,61 @@ describe('builder/builder', () => {
             })
         });
         
+        describe('#adr', () => {
+            it('should throw if no kop', () => {
+                expect(() => {
+                    builder.adr({ name: 'Foo Bar', street: 'Example Street 1', postalCode: '12345', city: 'Baz' });
+                }).to.throw('Required KOP');
+            });
+    
+            it('should throw after end', () => {
+                builder.kop({ requestType: RequestType.AN });
+                builder.end();
+                expect(() => {
+                    builder.adr({ name: 'Foo Bar', street: 'Example Street 1', postalCode: '12345', city: 'Baz' });
+                }).to.throw('END already written');
+            });
+            
+            it('should write line', () => {
+                builder.kop({ requestType: RequestType.AN });
+                builder.adr({ name: 'Foo Bar', street: 'Example Street 1', postalCode: '12345', city: 'Baz' });
+                builder.adr({ name: 'Foo Bar', street: 'Example Street 1', postalCode: '12345', city: 'Baz', country: 'GER' });
+                builder.end();
+                
+                let parts = builder.getWriter().toString().split(/\r\n/);
+                
+                expect(parts[1]).to.match(/^ADRFoo Bar {83}Example Street 1 {14}   12345 Baz {27}$/)
+                expect(parts[2]).to.match(/^ADRFoo Bar {83}Example Street 1 {14}GER12345 Baz {27}$/)
+            });
+            
+            it('should write name', () => {
+                builder.kop({ requestType: RequestType.AN });
+                builder.adr({ name: 'Foo Bar', street: 'Example Street 1', postalCode: '12345', city: 'Baz' });
+                builder.adr({ name: [ 'Foo Bar' ], street: 'Example Street 1', postalCode: '12345', city: 'Baz' });
+                builder.adr({ name: [ 'Foo', 'Bar' ], street: 'Example Street 1', postalCode: '12345', city: 'Baz' });
+                builder.adr({ name: [ 'Foo', 'Bar', 'Baz' ], street: 'Example Street 1', postalCode: '12345', city: 'Baz' });
+                builder.end();
+    
+                let parts = builder.getWriter().toString().split(/\r\n/);
+    
+                expect(parts[ 1 ].substr(3, 30)).to.match(/^Foo Bar {23}$/);
+                expect(parts[ 1 ].substr(33, 30)).to.match(/^ {30}$/);
+                expect(parts[ 1 ].substr(63, 30)).to.match(/^ {30}$/);
+    
+                expect(parts[ 2 ].substr(3, 30)).to.match(/^Foo Bar {23}$/);
+                expect(parts[ 2 ].substr(33, 30)).to.match(/^ {30}$/);
+                expect(parts[ 2 ].substr(63, 30)).to.match(/^ {30}$/);
+                
+                expect(parts[ 3 ].substr(3, 30)).to.match(/^Foo {27}$/);
+                expect(parts[ 3 ].substr(33, 30)).to.match(/^Bar {27}$/);
+                expect(parts[ 3 ].substr(63, 30)).to.match(/^ {30}$/);
+                
+                expect(parts[ 4 ].substr(3, 30)).to.match(/^Foo {27}$/);
+                expect(parts[ 4 ].substr(33, 30)).to.match(/^Bar {27}$/);
+                expect(parts[ 4 ].substr(63, 30)).to.match(/^Baz {27}$/);
+            })
+        });
+        
         describe('#poa', () => {
             it('should throw if no kop', () => {
                 expect(() => builder.poa({ articleNumber: '', gross: 13 })).to.throw('Required KOP');
