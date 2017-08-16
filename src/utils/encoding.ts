@@ -3,7 +3,7 @@ export function encode(input : string) : string {
     let result = '';
     
     for(let i = 0, l = input.length; i < l; ++i) {
-        const code : number = charPointAt(input, i)!;
+        const code : number = codePointAt(input, i)!;
         
         if(0x80 > code) {
             result += String.fromCharCode(code);
@@ -55,7 +55,8 @@ export function decode(input : string) : string {
     return result;
 }
 
-export function charPointAt(str : string, position : number) : number|undefined {
+export function codePointAt(str : string, position : number) : number|undefined {
+    /* istanbul ignore if */
     if(str.codePointAt) {
         return str.codePointAt(position);
     }
@@ -80,6 +81,7 @@ export function charPointAt(str : string, position : number) : number|undefined 
 }
 
 export function fromCodePoint(...codePoints : number[]) : string {
+    /* istanbul ignore if */
     if(String.fromCodePoint) {
         return String.fromCodePoint(...codePoints);
     }
@@ -92,6 +94,7 @@ export function fromCodePoint(...codePoints : number[]) : string {
     var highSurrogate;
     var lowSurrogate;
     var index = -1;
+    
     if (!codePoints.length) {
         return '';
     }
