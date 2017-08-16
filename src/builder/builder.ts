@@ -22,6 +22,9 @@ export class UGLBuilder<T extends IUGLWriter> {
                 protected readonly mode : Mode = Mode.Craftsman) {
     }
     
+    /**
+     * @see http://www.label-software.de/wp-content/uploads/2017/03/ugl_schnittstelle.pdf 3.1 Satzart KOP
+     */
     kop(data : IKop) : this {
         if(this.wroteEnd) {
             throw new Error('END already written');
@@ -69,6 +72,9 @@ export class UGLBuilder<T extends IUGLWriter> {
         return this;
     }
     
+    /**
+     * @see http://www.label-software.de/wp-content/uploads/2017/03/ugl_schnittstelle.pdf 3.3 Satzart ADR
+     */
     adr(data : IAdr) : this {
         this.check();
         
@@ -97,6 +103,9 @@ export class UGLBuilder<T extends IUGLWriter> {
         return this;
     }
     
+    /**
+     * @see http://www.label-software.de/wp-content/uploads/2017/03/ugl_schnittstelle.pdf 3.4 Satzart POA
+     */
     poa(data : IPoa) : this {
         this.check();
         
@@ -151,6 +160,9 @@ export class UGLBuilder<T extends IUGLWriter> {
         return this;
     }
     
+    /**
+     * @see http://www.label-software.de/wp-content/uploads/2017/03/ugl_schnittstelle.pdf 3.5 Satzart POT
+     */
     pot(data : IPot) : this {
         this.check();
         
@@ -176,6 +188,9 @@ export class UGLBuilder<T extends IUGLWriter> {
         return this;
     }
     
+    /**
+     * @see http://www.label-software.de/wp-content/uploads/2017/03/ugl_schnittstelle.pdf 3.6 Satzart POZ
+     */
     poz(data : IPoz) : this {
         this.check();
         
@@ -209,6 +224,9 @@ export class UGLBuilder<T extends IUGLWriter> {
         return this;
     }
     
+    /**
+     * @see http://www.label-software.de/wp-content/uploads/2017/03/ugl_schnittstelle.pdf 3.7 Satzart END
+     */
     end(data : IEnd = {}) : this {
         this.check();
         
