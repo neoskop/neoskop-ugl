@@ -30,6 +30,14 @@ describe('writer/abstract-writer', () => {
                 writer.string('Foobar', 10);
                 expect(spy.lastCall.args[0]).to.be.eql('Foobar    ');
             });
+            
+            it('should encode non-ascii characters', () => {
+                writer.string('ä', 10);
+                expect(spy.lastCall.args[0]).to.be.equal(String.fromCharCode(0xc3, 0xa4) + '        ');
+                
+                writer.string('µ', 1);
+                expect(spy.lastCall.args[0]).to.be.equal(String.fromCharCode(0xc2));
+            })
         });
         
         describe('#int', () => {
