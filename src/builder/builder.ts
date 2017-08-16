@@ -9,6 +9,7 @@ import { PositionType } from "../types/position-type";
 import { IEnd } from '../types/end-interface';
 import { IAdr } from '../types/adr-interface';
 import { IPot } from '../types/pot-interface';
+import { IPoz } from '../types/poz-interface';
 
 export class UGLBuilder<T extends IUGLWriter> {
     protected wroteKop : boolean = false;
@@ -171,6 +172,39 @@ export class UGLBuilder<T extends IUGLWriter> {
             .string(text[2], 40)
             .int(index, 18)
             .nl();
+        
+        return this;
+    }
+    
+    poz(data : IPoz) : this {
+        this.check();
+        
+        let {
+            positionCraftsman = this.mode === Mode.Craftsman ? ++this.runningPosition : 0,
+            positionWholesale = this.mode === Mode.Wholesale ? ++this.runningPosition : 0,
+            type,
+            description = '',
+            dayRate = 0,
+            net
+        } = data;
+        
+        if(!/^(\d{2}|[A-Z]{2})$/.test(type)) {
+            throw new Error(`Invalid type "${type}"`)
+        }
+        
+        if(type === '99' && !description) {
+            throw new Error(`Field "description" is required for type "99"`);
+        }
+        
+        this.writer
+            .string(RecordType.POZ, 3)
+            .int(positionCraftsman, 10)
+            .int(positionWholesale, 10)
+            .string(type, 2)
+            .string(description, 80)
+            .float(dayRate, 11, 2)
+            .float(net, 11, 2)
+            .nl()
         
         return this;
     }

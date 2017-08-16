@@ -387,6 +387,100 @@ describe('builder/builder', () => {
             });
         });
         
+        describe('#poz', () => {
+            it('should throw if no kop', () => {
+                expect(() => builder.poz({ type: '03', net: 13.37 })).to.throw('Required KOP');
+            });
+    
+            it('should throw after end', () => {
+                builder.kop({ requestType: RequestType.AN });
+                builder.end();
+                expect(() => builder.poz({ type: '03', net: 13.37 })).to.throw('END already written');
+            });
+            
+            it('should throw on invalid type', () => {
+                builder.kop({ requestType: RequestType.AN });
+                expect(() => {
+                    builder.poz({ type: '2', net: 0 });
+                }).to.throw('Invalid type "2"');
+                expect(() => {
+                    builder.poz({ type: '02', net: 0 });
+                }).to.not.throw();
+                expect(() => {
+                    builder.poz({ type: 'C', net: 0 });
+                }).to.throw('Invalid type "C"');
+                expect(() => {
+                    builder.poz({ type: 'CU', net: 0 });
+                }).to.not.throw();
+            })
+    
+            describe('for craftsman', () => {
+                beforeEach(() => {
+                    builder = new UGLBuilder(writer, Mode.Craftsman);
+        
+                    builder.kop({ requestType: RequestType.BE, deliveryDate: '20170918' });
+                });
+    
+                it('should write line with minimal data', () => {
+                    builder.poz({ type: '03', net: 13.37 });
+                    builder.end();
+        
+                    expect(builder.getWriter().toString()).to.match(
+                        /\r\nPOZ0{9}10{10}03 {80}0{11}0{7}1337\r\n/
+                    )
+                });
+    
+                it('should write line with maximal data', () => {
+                    builder.poz({
+                        positionCraftsman: 10,
+                        positionWholesale: 18,
+                        type             : '99',
+                        description      : 'Foobar',
+                        dayRate          : 12345.6,
+                        net              : 987654
+                    });
+                    builder.end();
+
+                    expect(builder.getWriter().toString()).to.match(
+                        /\r\nPOZ0{8}100{8}1899Foobar {74}0000123456000098765400\r\n/
+                    );
+                });
+            });
+    
+            describe('for wholesale', () => {
+                beforeEach(() => {
+                    builder = new UGLBuilder(writer, Mode.Wholesale);
+        
+                    builder.kop({ requestType: RequestType.AB, deliveryDate: '20170918' });
+                });
+    
+                it('should write line with minimal data', () => {
+                    builder.poz({ type: '03', net: 13.37 });
+                    builder.end();
+        
+                    expect(builder.getWriter().toString()).to.match(
+                        /\r\nPOZ0{10}0{9}103 {80}0{11}0{7}1337\r\n/
+                    )
+                });
+    
+                it('should write line with maximal data', () => {
+                    builder.poz({
+                        positionCraftsman: 10,
+                        positionWholesale: 18,
+                        type             : '99',
+                        description      : 'Foobar',
+                        dayRate          : 12345.6,
+                        net              : 987654
+                    });
+                    builder.end();
+
+                    expect(builder.getWriter().toString()).to.match(
+                        /\r\nPOZ0{8}100{8}1899Foobar {74}0000123456000098765400\r\n/
+                    );
+                });
+            });
+        });
+        
         describe('#end', () => {
             it('should throw if no kop', () => {
                 expect(() => builder.end()).to.throw('Required KOP');
