@@ -312,6 +312,80 @@ describe('builder/builder', () => {
                 expect(parts[ 4 ].substr(157, 5)).to.be.eql('00000');
             });
         });
+    
+        describe('#pot', () => {
+            it('should throw if no kop', () => {
+                expect(() => builder.pot({ text: 'Foobar' })).to.throw('Required KOP');
+            });
+    
+            it('should throw after end', () => {
+                builder.kop({ requestType: RequestType.AN });
+                builder.end();
+                expect(() => builder.pot({ text: 'Foobar' })).to.throw('END already written');
+            });
+    
+            describe('for craftsman', () => {
+                beforeEach(() => {
+                    builder = new UGLBuilder(writer, Mode.Craftsman);
+        
+                    builder.kop({ requestType: RequestType.BE, deliveryDate: '20170918' });
+                });
+    
+                it('should write line with minimal data', () => {
+                    builder.pot({ text: 'Foobar' });
+                    builder.end();
+        
+                    expect(builder.getWriter().toString()).to.match(
+                        /\r\nPOT0{9}10{10}Foobar {114}0{17}1\r\n/
+                    )
+                });
+    
+                it('should write line with maximal data', () => {
+                    builder.pot({
+                        positionCraftsman: 10,
+                        positionWholesale: 0,
+                        text             : [ 'Foo', 'Bar', 'Baz' ],
+                        index            : 18,
+                    });
+                    builder.end();
+        
+                    expect(builder.getWriter().toString()).to.match(
+                        /\r\nPOT0{8}100{10}Foo {37}Bar {37}Baz {37}0{16}18\r\n/
+                    );
+                });
+            });
+            
+            describe('for wholesale', () => {
+                beforeEach(() => {
+                    builder = new UGLBuilder(writer, Mode.Wholesale);
+        
+                    builder.kop({ requestType: RequestType.AB, deliveryDate: '20170918' });
+                });
+    
+                it('should write line with minimal data', () => {
+                    builder.pot({ text: 'Foobar' });
+                    builder.end();
+        
+                    expect(builder.getWriter().toString()).to.match(
+                        /\r\nPOT0{10}0{9}1Foobar {114}0{17}1\r\n/
+                    )
+                });
+    
+                it('should write line with maximal data', () => {
+                    builder.pot({
+                        positionCraftsman: 10,
+                        positionWholesale: 18,
+                        text             : [ 'Foo', 'Bar', 'Baz' ],
+                        index            : 18,
+                    });
+                    builder.end();
+        
+                    expect(builder.getWriter().toString()).to.match(
+                        /\r\nPOT0{8}100{8}18Foo {37}Bar {37}Baz {37}0{16}18\r\n/
+                    );
+                });
+            });
+        });
         
         describe('#end', () => {
             it('should throw if no kop', () => {

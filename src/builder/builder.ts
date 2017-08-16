@@ -8,6 +8,7 @@ import { Mode } from '../types/mode';
 import { PositionType } from "../types/position-type";
 import { IEnd } from '../types/end-interface';
 import { IAdr } from '../types/adr-interface';
+import { IPot } from '../types/pot-interface';
 
 export class UGLBuilder<T extends IUGLWriter> {
     protected wroteKop : boolean = false;
@@ -144,6 +145,31 @@ export class UGLBuilder<T extends IUGLWriter> {
             .string(quantityUnit, 3)
             .string(pkz, 1)
             .string(storeType, 1)
+            .nl();
+        
+        return this;
+    }
+    
+    pot(data : IPot) : this {
+        this.check();
+        
+        let {
+            positionCraftsman = this.mode === Mode.Craftsman ? ++this.runningPosition : 0,
+            positionWholesale = this.mode === Mode.Wholesale ? ++this.runningPosition : 0,
+            text,
+            index = ++this.runningIndex,
+        } = data;
+        
+        text = this.scalarToArray(text, '', 3);
+        
+        this.writer
+            .string(RecordType.POT, 3)
+            .int(positionCraftsman, 10)
+            .int(positionWholesale, 10)
+            .string(text[0], 40)
+            .string(text[1], 40)
+            .string(text[2], 40)
+            .int(index, 18)
             .nl();
         
         return this;
