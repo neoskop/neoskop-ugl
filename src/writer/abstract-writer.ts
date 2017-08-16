@@ -1,11 +1,12 @@
 import { IUGLWriter } from './writer-interface';
 import { strPadLeft, strPadRight } from '../utils/str-pad';
 import { round } from '../utils/round';
+import { encode } from '../utils/encoding';
 
 export abstract class UGLAbstractWriter implements IUGLWriter {
     
     string(str : string, length : number) : this {
-        this.write(strPadRight(str, length), length);
+        this.write(strPadRight(encode(str), length), length);
     
         return this;
     }
