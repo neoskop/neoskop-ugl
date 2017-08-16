@@ -412,7 +412,14 @@ describe('builder/builder', () => {
                 expect(() => {
                     builder.poz({ type: 'CU', net: 0 });
                 }).to.not.throw();
-            })
+            });
+            
+            it('should throw on missing description for type 99', () => {
+                builder.kop({ requestType: RequestType.AN });
+                expect(() => {
+                    builder.poz({ type: '99', net: 0 });
+                }).to.throw('Field "description" is required for type "99"');
+            });
     
             describe('for craftsman', () => {
                 beforeEach(() => {
