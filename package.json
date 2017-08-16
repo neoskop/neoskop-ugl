@@ -6,10 +6,10 @@
   "jsnext:main": "lib.es6/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "test": "mocha --compilers ts:ts-node/register src/**/*.spec.ts src/*.spec.ts",
-    "test:watch": "npm run test -- --watch --watch-extension ts",
-    "test:coverage": "nyc -e '.ts' -r html -r text npm run test",
-    "test:coverall": "npm run test:coverage && nyc report -r text-lcov | coveralls",
+    "test:raw": "mocha --compilers ts:ts-node/register src/**/*.spec.ts src/*.spec.ts",
+    "test:watch": "npm run test:raw -- --watch --watch-extension ts",
+    "test:coverage": "nyc -e '.ts' -r html -r text npm run test:raw",
+    "test": "npm run test:coverage && nyc report -r text-lcov | coveralls",
     "clean": "rimraf lib lib.es6 coverage",
     "prebuild": "npm run test:coverage",
     "build": "npm run clean && tsc && tsc -p tsconfig.es6.json"
