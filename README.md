@@ -2,7 +2,10 @@
 
 A Javascript implementation of the [UGL Interface][ugl-description] _(german only)_.
 
-[![Test coverage][coveralls-image]][coveralls-url]
+[![Travis master][travis-master-image]][travis-master-url]
+[![Test coverage master][coveralls-master-image]][coveralls-master-url]
+[![Travis develop][travis-develop-image]][travis-develop-url]
+[![Test coverage develop][coveralls-develop-image]][coveralls-develop-url]
 
 ## Installation
 
@@ -58,8 +61,14 @@ yarn run build
 
 [![Neoskop GmbH][neoskop-image]][neoskop-url]
 
-[coveralls-image]: https://coveralls.io/repos/github/neoskop/neoskop-ugl/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/github/neoskop/neoskop-ugl?branch=master
+[travis-master-image]: https://img.shields.io/travis/neoskop/neoskop-ugl/master.svg
+[travis-master-url]: https://travis-ci.org/neoskop/neoskop-ugl
+[travis-develop-image]: https://img.shields.io/travis/neoskop/neoskop-ugl/develop.svg
+[travis-develop-url]: https://travis-ci.org/neoskop/neoskop-ugl
+[coveralls-master-image]: https://coveralls.io/repos/github/neoskop/neoskop-ugl/badge.svg?branch=master
+[coveralls-master-url]: https://coveralls.io/github/neoskop/neoskop-ugl?branch=master
+[coveralls-develop-image]: https://coveralls.io/repos/github/neoskop/neoskop-ugl/badge.svg?branch=develop
+[coveralls-develop-url]: https://coveralls.io/github/neoskop/neoskop-ugl?branch=develop
 [ugl-description]: http://www.label-software.de/wp-content/uploads/2017/03/ugl_schnittstelle.pdf
 [neoskop-image]: ./neoskop.png
 [neoskop-url]: https://www.neoskop.de/
