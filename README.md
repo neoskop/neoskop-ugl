@@ -2,9 +2,9 @@
 
 A Javascript implementation of the [UGL Interface][ugl-description] _(german only)_.
 
-[![Travis master][travis-master-image]][travis-master-url]
-[![Test coverage master][coveralls-master-image]][coveralls-master-url]
-[![Travis develop][travis-develop-image]][travis-develop-url]
+Master [![Travis master][travis-master-image]][travis-master-url]
+[![Test coverage master][coveralls-master-image]][coveralls-master-url]  
+Develop [![Travis develop][travis-develop-image]][travis-develop-url]
 [![Test coverage develop][coveralls-develop-image]][coveralls-develop-url]
 
 ## Installation
