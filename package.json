@@ -1,6 +1,6 @@
 {
   "name": "@neoskop/ugl",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A library to create UGL files",
   "main": "lib/index.js",
   "jsnext:main": "lib.es6/index.js",
