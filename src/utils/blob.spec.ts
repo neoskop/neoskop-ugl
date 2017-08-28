@@ -96,7 +96,7 @@ describe('utils/blob', () => {
                 const buf = builder.toBuffer();
     
     
-                expect(buf).to.be.eql(Buffer.from([ 0x61, 0x62, 0x63, 0x64 ]));
+                expect(buf).to.be.eql(new Buffer([ 0x61, 0x62, 0x63, 0x64 ]));
             });
         });
         

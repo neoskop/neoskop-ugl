@@ -31,7 +31,7 @@ export class BlobBuilder {
     }
     
     toBuffer() {
-        return Buffer.from(this.toUint8Array().buffer as ArrayBuffer);
+        return new Buffer(this.toUint8Array());
     }
     
     toBlob() : Blob {
