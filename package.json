@@ -6,7 +6,7 @@
   "jsnext:main": "lib.es6/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "test:raw": "mocha --compilers ts:ts-node/register src/**/*.spec.ts src/*.spec.ts",
+    "test:raw": "mocha",
     "test:watch": "npm run test:raw -- --watch --watch-extension ts",
     "test:coverage": "nyc -e '.ts' -r html -r text npm run test:raw",
     "test": "npm run test:coverage && nyc report -r text-lcov | coveralls",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neoskop/neoskop-ugl.git"
+    "url": "https://github.com/neoskop/neoskop-ugl"
   },
   "keywords": [
     "ugl"
@@ -28,19 +28,22 @@
   },
   "homepage": "https://github.com/neoskop/neoskop-ugl#readme",
   "devDependencies": {
-    "@types/chai": "4.0.2",
-    "@types/mocha": "2.2.41",
-    "@types/node": "8.0.20",
-    "@types/sinon": "2.3.3",
-    "chai": "4.1.1",
-    "coveralls": "2.13.1",
-    "mocha": "3.5.0",
-    "nyc": "11.1.0",
-    "rimraf": "2.6.1",
-    "sinon": "3.2.0",
-    "ts-node": "3.3.0",
-    "tslib": "1.7.1",
-    "typescript": "2.4.2"
+    "@types/chai": "4.3.4",
+    "@types/mocha": "10.0.1",
+    "@types/node": "16.18.24",
+    "@types/sinon": "10.0.14",
+    "chai": "4.3.7",
+    "coveralls": "3.1.1",
+    "mocha": "10.2.0",
+    "nyc": "15.1.0",
+    "rimraf": "5.0.0",
+    "sinon": "15.0.4",
+    "ts-node": "10.9.1",
+    "tslib": "2.5.0",
+    "typescript": "5.0.4"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   },
   "nyc": {
     "exclude": [

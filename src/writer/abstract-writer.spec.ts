@@ -16,10 +16,6 @@ describe('writer/abstract-writer', () => {
             }
         });
         
-        afterEach(() => {
-            spy.reset();
-        });
-        
         describe('#string', () => {
             it('should crop from right when to long', () => {
                 writer.string('Foobar', 3);
