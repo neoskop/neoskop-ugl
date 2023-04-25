@@ -1,6 +1,6 @@
-import 'mocha';
 import { expect } from 'chai';
-import { codePointAt, decode, encode, fromCodePoint } from './encoding';
+import 'mocha';
+import { decode, encode } from './encoding';
 
 
 const tests : [ string, number[] ][] = [
@@ -11,19 +11,6 @@ const tests : [ string, number[] ][] = [
 ];
 
 describe('utils/encoding', () => {
-    let oFromCodePoint : any, oCodePointAt : any;
-    before(() => {
-        oFromCodePoint = String.fromCodePoint;
-        delete String.fromCodePoint;
-        
-        oCodePointAt = String.prototype.codePointAt;
-        delete String.prototype.codePointAt;
-    });
-    
-    after(() => {
-        String.fromCodePoint = oFromCodePoint;
-        String.prototype.codePointAt = oCodePointAt;
-    });
     
     describe('encode', () => {
         it('should encode into 8bit ascii', () => {
@@ -41,32 +28,5 @@ describe('utils/encoding', () => {
             }
         })
     });
-    
-    describe('codePointAt', () => {
-        it('should undefined on invalid input', () => {
-            expect(codePointAt('', -1)).to.be.undefined;
-            expect(codePointAt('a', 2)).to.be.undefined;
-        })
-    });
-    
-    describe('fromCodePoint', () => {
-        it('should return empty string on no input', () => {
-            expect(fromCodePoint()).to.be.equal('');
-        });
-        
-        it('should throw on invalid code point', () => {
-            expect(() => {
-                fromCodePoint(Infinity);
-            }).to.throw('Invalid code point: Infinity');
-            expect(() => {
-                fromCodePoint(-1);
-            }).to.throw('Invalid code point: -1');
-            expect(() => {
-                fromCodePoint(0x110000);
-            }).to.throw('Invalid code point: 1114112');
-            expect(() => {
-                fromCodePoint(1.1);
-            }).to.throw('Invalid code point: 1.1');
-        })
-    });
+
 });

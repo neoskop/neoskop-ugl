@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "lib.es6",
-    "module": "es2015"
+    "outDir": "lib.esm",
+    "module": "ES2022"
   }
 }
