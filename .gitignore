@@ -2,7 +2,7 @@
 /node_modules/
 
 /lib/
-/lib.es6/
+/lib.esm/
 /.nyc_output/
 /coverage/
 /.coveralls.yml
