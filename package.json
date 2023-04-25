@@ -3,16 +3,21 @@
   "version": "1.2.1",
   "description": "A library to create UGL files",
   "main": "lib/index.js",
-  "jsnext:main": "lib.es6/index.js",
+  "jsnext:main": "lib.esm/index.js",
   "typings": "lib/index.d.ts",
+  "exports": {
+    "types": "./lib/index.d.ts",
+    "import": "./lib.esm/index.js",
+    "default": "./lib/index.js"
+  },
   "scripts": {
     "test:raw": "mocha",
     "test:watch": "npm run test:raw -- --watch --watch-extension ts",
     "test:coverage": "nyc -e '.ts' -r html -r text npm run test:raw",
     "test": "npm run test:coverage && nyc report -r text-lcov | coveralls",
-    "clean": "rimraf lib lib.es6 coverage",
+    "clean": "rimraf lib lib.esm coverage",
     "prebuild": "npm run test:coverage",
-    "build": "npm run clean && tsc && tsc -p tsconfig.es6.json"
+    "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && echo '{ \"type\": \"module\" }' > lib.esm/package.json"
   },
   "repository": {
     "type": "git",
