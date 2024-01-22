@@ -1,4 +1,5 @@
 /.idea/
+/.vscode/
 /node_modules/
 
 /src/
@@ -8,5 +9,9 @@
 /.gitignore
 /.travis.yml
 /tsconfig.json
-/tsconfig.es6.json
+/tsconfig.esm.json
+/jest.config.js
 /yarn.lock
+/bun.lockb
+/.prettierrc
+/.nvmrc
