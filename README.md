@@ -46,11 +46,11 @@ console.log(builder.build());
 
 ## 2.0 Rewrite
 
-[x] Rewrite APIs
-[x] Refactor
-[x] Fix 202 byte line length issue
-[x] Add support for GDR records
-[x] Less strict validations, so `RGD – POA - KOP - POA – POA – KOP – POA – POA - END` could be generated now
+-   Rewrite APIs
+-   Refactor
+-   Fix 202 byte line length issue
+-   Add support for GDR records
+-   Less strict validations, so `RGD – POA - KOP - POA – POA – KOP – POA – POA - END` could be generated now
 
 ## Testing
 
