@@ -1,16 +1,22 @@
-import 'mocha';
-import { expect } from 'chai';
-import { ugl } from './index';
-import { UGLBuilder } from './builder/builder';
-import { UGLMemoryWriter } from './writer/memory-writer';
+import UGL, { Builder } from './index';
+describe('UGL', () => {
+    it('should export UGL namespace as default', () => {
+        expect(UGL).toBeInstanceOf(Object);
+    });
 
-describe('index', () => {
-    describe('ugl', () => {
-        it('should create a builder with a memory writer', () => {
-            let u = ugl();
-            
-            expect(u).to.be.instanceOf(UGLBuilder);
-            expect(u.getWriter()).to.be.instanceOf(UGLMemoryWriter);
-        });
-    })
-})
+    it('should export Builder in UGL namespace', () => {
+        expect(UGL.Builder).toBeInstanceOf(Function);
+    });
+
+    it('should export stringify in UGL namespace', () => {
+        expect(UGL.stringify).toBeInstanceOf(Function);
+    });
+
+    it('should export raw in UGL namespace', () => {
+        expect(UGL.raw).toBeDefined();
+    });
+
+    it('should export Builder as named export', () => {
+        expect(Builder).toBeInstanceOf(Function);
+    });
+});
