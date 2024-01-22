@@ -1,10 +1,16 @@
-import { UGLBuilder } from './builder/builder';
-import { UGLMemoryWriter } from './writer/memory-writer';
+import { stringify as stringify_ } from './stringify';
+import { Builder as Builder_ } from './builder';
+import * as raw_ from './raw';
 
-export function ugl() : UGLBuilder<UGLMemoryWriter> {
-    return new UGLBuilder(new UGLMemoryWriter());
+module UGL {
+    export const Builder = Builder_;
+    export type Builder = Builder_;
+    export const stringify = stringify_;
+
+    export import raw = raw_;
 }
 
-export * from './writer';
-export * from './builder';
+export default UGL;
+
+export { Builder_ as Builder };
 export * from './types';
